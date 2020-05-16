@@ -27,8 +27,8 @@ const int16_t CHANNEL_MID_MAX = 1020;
 void debugSBUS (uint16_t* channels, bool failSafe, bool lostFrame);
 void terminalCls();
 #endif
-void mapTurningChannel(uint16_t turningChannel,  int16_t* speeds);
-void mapReverseChannel(uint16_t reverseChannel, int16_t* speeds);
+void mapTurningChannel(uint16_t turningChannel,  int16_t* speeds, bool reversed);
+bool mapReverseChannel(uint16_t reverseChannel, int16_t* speeds);
 void mapThrottleChannel(uint16_t throttleChannel, int16_t* speeds);
 
 SBUS x8r(Serial1);
@@ -39,7 +39,7 @@ void setup() {
   Serial.begin(115200);
   #endif
   // begin the SBUS communication
-	x8r.begin();
+  x8r.begin();
 
   ledGreen(0);
   ledRed(0);
@@ -73,10 +73,10 @@ void loop() {
   else
   {
     int16_t speeds[2];
+    bool reversed = false;
     mapThrottleChannel(channels[THROTTLE_CHANNEL], &speeds[0]);
-    mapReverseChannel(channels[REVERSE_CHANNEL], &speeds[0]);
-    mapTurningChannel(channels[TURNING_CHANNEL], &speeds[0]);
-
+    reversed = mapReverseChannel(channels[REVERSE_CHANNEL], &speeds[0]);
+    mapTurningChannel(channels[TURNING_CHANNEL], &speeds[0], reversed);
     motors.setSpeeds(speeds[0],speeds[1]);
     ledRed(0);
   }
@@ -84,8 +84,8 @@ void loop() {
 
 void mapThrottleChannel(uint16_t throttleChannel, int16_t* speeds) {
   if(throttleChannel > CHANNEL_MIN && throttleChannel < CHANNEL_MAX ) {
-    speeds[0] = round((throttleChannel -CHANNEL_MIN) / 3.175);
-    speeds[1] = round((throttleChannel -CHANNEL_MIN) / 3.175);
+    speeds[0] = round( (throttleChannel - CHANNEL_MIN) / ((CHANNEL_MAX - CHANNEL_MIN) / MOTOR_MAX_FORWARD) );
+    speeds[1] = round( (throttleChannel - CHANNEL_MIN) / ((CHANNEL_MAX - CHANNEL_MIN) / MOTOR_MAX_FORWARD) );
   } else if (throttleChannel < CHANNEL_MIN) {
     speeds[0] = MOTOR_OFF;
     speeds[1] = MOTOR_OFF;
@@ -95,19 +95,32 @@ void mapThrottleChannel(uint16_t throttleChannel, int16_t* speeds) {
   }
 }
 
-void mapReverseChannel(uint16_t reverseChannel, int16_t* speeds) {
+bool mapReverseChannel(uint16_t reverseChannel, int16_t* speeds) {
   if( reverseChannel > CHANNEL_MAX ) {
     speeds[0] = -speeds[0];
     speeds[1] = -speeds[1];
+    return true;
   }
+
+  return false;
 }
 
-void mapTurningChannel(uint16_t turningChannel,  int16_t* speeds) {
+void mapTurningChannel(uint16_t turningChannel,  int16_t* speeds, bool reversed) {
   if(turningChannel > CHANNEL_MIN && turningChannel < CHANNEL_MAX ) {
     if(turningChannel < CHANNEL_MID_MIN ) {
-      speeds[0] = round(speeds[0]  * (CHANNEL_MAX - turningChannel) / ( CHANNEL_MAX - CHANNEL_MID_MAX) );
+      int16_t current_speed = round(speeds[0]  * (CHANNEL_MAX - turningChannel) / ( CHANNEL_MAX - CHANNEL_MID_MAX) );
+      if( reversed ) {
+        speeds[1] = current_speed;
+      } else {
+        speeds[0] = current_speed;
+      }
     } else if (turningChannel > CHANNEL_MID_MAX) {
-      speeds[1] = round(speeds[1]  * (turningChannel -CHANNEL_MIN) / (CHANNEL_MID_MIN - CHANNEL_MIN) );
+      int16_t current_speed = round(speeds[1]  * (turningChannel -CHANNEL_MIN) / (CHANNEL_MID_MIN - CHANNEL_MIN) );
+      if( reversed ) {
+        speeds[0] = current_speed;
+      } else {
+        speeds[1] = current_speed;
+      }
     }
   } else if (turningChannel < CHANNEL_MIN) {
     speeds[0] = MOTOR_MAX_REVERSE;
@@ -116,7 +129,8 @@ void mapTurningChannel(uint16_t turningChannel,  int16_t* speeds) {
     speeds[0] = MOTOR_MAX_FORWARD;
     speeds[1] = MOTOR_MAX_REVERSE;
   }
-  
+}
+
 }
 
 #ifdef MY_DEBUG
