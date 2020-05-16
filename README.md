@@ -23,7 +23,7 @@ alt="IMAGE ALT TEXT HERE" width="278" height="190" /></a>
 
 ## Status leds
 
-On the Zumo 32U4 board you got three leds yellow green red.
+On the Zumo 32U4 board you got three leds yellow, green and red.
 
 | Led    | Mode      | Description                    |
 | ------ | --------- | ------------------------------ |
@@ -34,8 +34,10 @@ On the Zumo 32U4 board you got three leds yellow green red.
 
 ## Debug
 
-If you wich to se the exact mesurements from SBUS channels in terminal you have to hook it up to USB and connect with putty to it.
-This mode should not be use more than debug purpose, you will miss packages from SBUS and that is made intentially because i wish to delay the output so merasurements can be read from console.
+If you wish to see the exact measurements from SBUS channels in terminal you have to hook it up to USB and use putty.
+
+>This mode should only be used for debug purpose, you will miss packages from SBUS and that is made intentially because i wish to delay the output so SBUS channel measurements can be read from console.
+
 
 * First you need to uncomment in main.cpp
 
