@@ -31,7 +31,7 @@ On the Zumo 32U4 board you got three leds yellow, green and red.
 
 | Led            | Mode      | Description                                  |
 | -------------- | --------- | -------------------------------------------- |
-| Flshing Red    | failSafe  | No connection to transmitter                 |
+| Flashing Red    | failSafe  | No connection to transmitter                 |
 | Yellow         | lostFrame | SBUS lost a frame                            |
 | Green          | Ok        | Stable color, We have connection to receiver |
 | Flashing Green | Waiting   | Not recieved a full sbus frame from receiver |
