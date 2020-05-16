@@ -1,6 +1,6 @@
 # Zumo 32U4 SBUS Receiver
 
-Using SBUS to communicate with the Zumo board. 
+Using SBUS to communicate with the Zumo 32U4 board. 
 You will also need a signal inverter between SBUS receiver and Zumo board [Build your own inverter](https://www.ernstc.dk/arduino/sbus.html).
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=1ch4kT6wLfE
@@ -9,7 +9,7 @@ alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
 ## Why use SBUS
 
-When using pwm we are restricted to use more input pins with SBUS we only need one.
+When using PWM we are restricted to use more input pins with SBUS we only need one.
 
 ## Wiring
 
@@ -32,8 +32,8 @@ On the Zumo 32U4 board you got three leds yellow, green and red.
 
 | Led            | Mode      | Description                                  |
 | -------------- | --------- | -------------------------------------------- |
-| Flshing Red    | failSafe  | No connection to transmitter                 |
-| Yellow         | lostFrame | SBUS lost a frame                            |
+| Flashing Red   | FailSafe  | No connection to transmitter                 |
+| Yellow         | LostFrame | SBUS lost a frame                            |
 | Green          | Ok        | Stable color, We have connection to receiver |
 | Flashing Green | Waiting   | Not recieved a full sbus frame from receiver |
 
@@ -53,7 +53,7 @@ If you wish to see the exact measurements from SBUS channels in terminal you hav
 
 * Open putty with these settings
    
-    Select Serial
-    Select your COM port
-    Select Speed: 115200
-    Window->Uncheck 'Push erased text to scrollback'
+    - Select Serial
+    - Select your COM port
+    - Select Speed: 115200
+    - Window->Uncheck 'Push erased text to scrollback'
