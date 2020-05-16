@@ -52,7 +52,7 @@ If you wish to see the exact measurements from SBUS channels in terminal you hav
 
 * Open putty with these settings
    
-    Select Serial
-    Select your COM port
-    Select Speed: 115200
-    Window->Uncheck 'Push erased text to scrollback'
+    - Select Serial
+    - Select your COM port
+    - Select Speed: 115200
+    - Window->Uncheck 'Push erased text to scrollback'
