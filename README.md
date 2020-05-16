@@ -7,6 +7,12 @@ You will also need a signal inverter between SBUS receiver and Zumo board [Build
 
 When using pwm we are restricted to use more input pins with SBUS we only need one.
 
+## Wiring
+
+<a href="https://user-images.githubusercontent.com/16755871/82107092-64dcd680-9725-11ea-99ec-610cd2e3c9df.png
+" target="_blank"><img src="https://user-images.githubusercontent.com/16755871/82107092-64dcd680-9725-11ea-99ec-610cd2e3c9df.png" 
+alt="IMAGE ALT TEXT HERE" width="278" height="190" /></a>
+
 ## Channels 
 
 | Stick    | Channel | Constant         | Description                                                     |
