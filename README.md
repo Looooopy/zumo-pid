@@ -24,6 +24,7 @@ alt="IMAGE ALT TEXT HERE" width="278" height="190" /></a>
 | Throttle | 2       | THROTTLE_CHANNEL | Gas & break, Mode 2 Stick on the left side move UP or DOWN      |
 | Turning  | 0       | TURNING_CHANNEL  | Left & Right, Mode 2 stick on the right side move LEFT or RIGHT |
 | Reverse  | 8       | REVERSE_CHANNEL  | Make zumo go in reverse (Switch B on my Radiolink)              |
+| Buzzer   | 9       | BUZZER_CHANNEL   | Make zumo play a meldy on the buzzer                            |
 
 ## Status leds
 

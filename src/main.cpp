@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <Wire.h>
 #include "SBUS.h"
 #include <Zumo32U4.h>
 
@@ -12,12 +11,15 @@ const int16_t MOTOR_MAX_REVERSE = -400;
 const int8_t  THROTTLE_CHANNEL = 2;
 const int8_t  TURNING_CHANNEL = 0;
 const int8_t  REVERSE_CHANNEL = 8;
+const int8_t  BUZZER_CHANNEL = 9;
 
 // Max and min values for channels
 const int16_t CHANNEL_MIN = 330;
 const int16_t CHANNEL_MAX = 1600;
 const int16_t CHANNEL_MID_MIN = 980;
 const int16_t CHANNEL_MID_MAX = 1020;
+
+const char melody[] PROGMEM  = "!L16 V8 cdefgab>cbagfedc";
 
 // Uncomment to output debug logging on usb
 // #define MY_DEBUG
@@ -30,9 +32,11 @@ void terminalCls();
 void mapTurningChannel(uint16_t turningChannel,  int16_t* speeds, bool reversed);
 bool mapReverseChannel(uint16_t reverseChannel, int16_t* speeds);
 void mapThrottleChannel(uint16_t throttleChannel, int16_t* speeds);
+void mapBuzzerChannel(uint16_t buzzerChannel);
 
 SBUS x8r(Serial1);
 Zumo32U4Motors motors;
+Zumo32U4Buzzer buzzer;
 
 void setup() {
   #ifdef MY_DEBUG
@@ -78,6 +82,7 @@ void loop() {
     reversed = mapReverseChannel(channels[REVERSE_CHANNEL], &speeds[0]);
     mapTurningChannel(channels[TURNING_CHANNEL], &speeds[0], reversed);
     motors.setSpeeds(speeds[0],speeds[1]);
+    mapBuzzerChannel(channels[BUZZER_CHANNEL]);
     ledRed(0);
   }
 }
@@ -131,6 +136,14 @@ void mapTurningChannel(uint16_t turningChannel,  int16_t* speeds, bool reversed)
   }
 }
 
+void mapBuzzerChannel(uint16_t buzzerChannel) {
+  if(buzzerChannel > CHANNEL_MID_MIN ) {
+    if(!buzzer.isPlaying()) {
+       buzzer.playFromProgramSpace(melody);
+    }
+  } else if(buzzer.isPlaying()) {
+    buzzer.stopPlaying();
+  }
 }
 
 #ifdef MY_DEBUG
