@@ -68,6 +68,7 @@ void loop() {
     // Set motor speed to 0
     motors.setSpeeds(0,0);
     ledRed(1);
+    ledGreen(0);
   }
   else
   {
